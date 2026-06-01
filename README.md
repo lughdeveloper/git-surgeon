@@ -1,437 +1,246 @@
-# 🔪 git-surgeon
+# git-surgeon 🔪
 
-[![Python Version](https://img.shields.io/badge/python-3.10+-blue?style=flat-square)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/python-3.10+-blue?style=flat-square)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![Version](https://img.shields.io/badge/version-0.1.0-orange?style=flat-square)](pyproject.toml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000?style=flat-square)](https://github.com/psf/black)
 
-> Analyze Git repositories and generate visual health reports directly in your terminal.
+> **Analyze Git repositories and generate visual health reports directly in your terminal.**
 
-**git-surgeon** é uma ferramenta CLI em Python que realiza análise profunda de repositórios Git locais, gerando relatórios visuais de "saúde" do projeto. Identifique padrões de desenvolvimento, detecte acoplamento implícito entre arquivos, acompanhe contribuidores inativos e muito mais.
+`git-surgeon` is a Python CLI that performs deep analysis of local Git repositories — revealing productivity patterns, hidden file coupling, inactive contributors, and project momentum. Everything rendered beautifully in the terminal.
 
-## 📊 O que o git-surgeon faz
+---
 
-### Análises Incluídas
-
-#### 1. **Commits por Hora do Dia** 📊
-
-Visualiza em quais horários o desenvolvedor é mais produtivo, ajudando a identificar padrões de trabalho e possíveis sinais de burnout.
+## Demo
 
 ```
-📊 Commits por hora do dia
-  00h ██░░░░░░░░  12
-  14h ████████░░  87  ← pico
-  ...
-```
+╭──────────────────────────────────────────────────╮
+│              git-surgeon · Health Report          │
+│  Repo: my-project   Branch: main   Commits: 1243 │
+╰──────────────────────────────────────────────────╯
 
-#### 2. **Arquivos com Maior Acoplamento** 🔗
+📊 Commits by hour of day
+  09h  ████████░░  76
+  10h  ██████████  94  ← peak
+  14h  ███████░░░  68
+  22h  ██░░░░░░░░  18
 
-Identifica pares de arquivos que frequentemente mudam juntos, revelando dependências ocultas e possíveis problemas de design.
+🔗 Files with highest coupling
+  src/auth.ts      ↔  src/middleware.ts    (47 commits together)
+  src/db.ts        ↔  src/models.ts        (35 commits together)
 
-```
-🔗 Arquivos com maior acoplamento
-  src/auth.ts  ↔  src/middleware.ts   (47x)
-  src/db.ts    ↔  src/models.ts       (35x)
-```
+👻 Ghost contributors
+  maria@dev.com       — 312 commits — last seen 8 months ago
+  joao@example.com    — 145 commits — last seen 6 months ago
 
-#### 3. **Contribuidores Fantasmas** 👻
+⚡ Most volatile files
+  src/api.ts          — 156 commits
+  src/utils.ts        — 89 commits
 
-Detecta autores que tiveram atividade significativa mas não contribuem há mais de 90 dias.
+📈 Project velocity
+  Last 30 days:       43 commits
+  Previous 30 days:   38 commits
+  Change:             +13.1% ↑
 
-```
-👻 Contribuidores fantasmas
-  maria@dev.com — 312 commits — inativo há 8 meses
-  joão@example.com — 145 commits — inativo há 6 meses
-```
-
-#### 4. **Arquivos Mais Voláteis** ⚡
-
-Top 10 arquivos mais alterados, indicando possíveis pontos de instabilidade no projeto.
-
-```
-⚡ Arquivos mais voláteis
-  src/api.ts — 156 commits
-  src/utils.ts — 89 commits
-```
-
-#### 5. **Velocidade do Projeto** 📈
-
-Compara commits dos últimos 30 dias vs 30 dias anteriores, mostrando se o projeto está acelerando, estável ou desacelerando.
-
-```
-📈 Velocidade do Projeto
-  Últimos 30 dias: 43 commits
-  30 dias anteriores: 38 commits
-  Variação: +13.1% ↑
-```
-
-#### 6. **Score de Saúde Geral** 💪
-
-Calcula um score de 0 a 100 baseado em todos os indicadores, com classificação: **Crítico / Regular / Saudável / Excelente**
-
-```
-╭─────────────────────────────────────╮
-│  Score de Saúde: 78/100  · Saudável ✓  │
-╰─────────────────────────────────────╯
+╭──────────────────────────────────────────────────╮
+│       Health Score: 78 / 100  ·  Healthy ✓       │
+╰──────────────────────────────────────────────────╯
 ```
 
 ---
 
-## 🚀 Instalação
+## Features
 
-### Pré-requisitos
+| Analysis | What it does |
+|---|---|
+| **Commits by hour** | Maps productivity peaks and detects unhealthy work patterns |
+| **Co-change analysis** | Finds files that always change together — revealing hidden coupling |
+| **Ghost contributors** | Lists authors inactive for 90+ days |
+| **Volatile files** | Top files by commit count — likely hotspots and instability sources |
+| **Project velocity** | Compares last 30 days vs previous 30 days |
+| **Health score** | Single 0–100 score with classification: Critical / Regular / Healthy / Excellent |
 
-- Python 3.10+
-- Git
+---
 
-### Instalação com pip (do repositório local)
+## Installation
+
+**Requirements:** Python 3.10+ and Git
 
 ```bash
-# Clone o repositório
+# Clone and install
 git clone https://github.com/lughdeveloper/git-surgeon.git
 cd git-surgeon
-
-# Instale em modo development
 pip install -e .
 
-# Para instalar também as dependências de desenvolvimento
-pip install -e ".[dev]"
-```
-
-### Verificar instalação
-
-```bash
+# Verify
 git-surgeon --help
 ```
 
+For development (includes tests, linter, type checker):
+
+```bash
+pip install -e ".[dev]"
+```
+
 ---
 
-## 📖 Uso
-
-### Comando Básico
+## Usage
 
 ```bash
-git-surgeon analyze ./meu-projeto
-```
+# Basic analysis
+git-surgeon analyze ./my-project
 
-### Exemplos Avançados
+# Filter by date
+git-surgeon analyze ./my-project --since 2024-01-01
 
-#### Analisar a partir de uma data específica
+# Filter by author
+git-surgeon analyze ./my-project --author "maria@example.com"
 
-```bash
-git-surgeon analyze ./projeto --since 2024-01-01
-```
+# Export to HTML
+git-surgeon analyze ./my-project --export report.html
 
-#### Filtrar por autor
+# Change result limit (default: 10)
+git-surgeon analyze ./my-project --top 20
 
-```bash
-git-surgeon analyze ./projeto --author "maria@example.com"
-```
-
-#### Exportar para HTML
-
-```bash
-git-surgeon analyze ./projeto --export report.html
-```
-
-#### Personalizar limite de resultados
-
-```bash
-git-surgeon analyze ./projeto --top 20
-```
-
-#### Combinar múltiplas flags
-
-```bash
-git-surgeon analyze ./projeto \
+# Combine flags
+git-surgeon analyze ./my-project \
   --since 2024-06-01 \
-  --author "joão" \
+  --author "joao" \
   --export report.html \
   --top 15
+
+# Verbose / debug mode
+git-surgeon analyze ./my-project --verbose
+
+# Show version
+git-surgeon version
 ```
 
-#### Modo verbose (debug)
+---
 
-```bash
-git-surgeon analyze ./projeto --verbose
-```
+## How the health score works
+
+The score starts at 100 and deductions are applied based on findings:
+
+| Factor | Max deduction | Trigger |
+|---|---|---|
+| Work-life balance | −20 pts | Commits heavily concentrated in off-hours |
+| File coupling | −25 pts | High co-change ratio between file pairs |
+| Team continuity | −20 pts | Ghost contributors detected |
+| File stability | −20 pts | One file accounts for >30% of all changes |
+| Project momentum | −15 pts | Velocity drop >30% or spike >50% |
+
+**Score classification:**
+
+| Score | Status |
+|---|---|
+| 80–100 | ✅ Excellent |
+| 60–79 | ✓ Healthy |
+| 40–59 | ⚠️ Regular |
+| 0–39 | ❌ Critical |
 
 ---
 
-## 📐 Como Funcionam as Métricas
-
-### 📊 Commits por Hora
-
-**O que avalia:** Distribuição de commits ao longo do dia (0-23h)
-
-**Por quê:** Ajuda a identificar:
-
-- Picos de produtividade
-- Sinais de overwork (commits em horas irregulares)
-- Padrões saudáveis de trabalho
-
-**Impacto no Score:** -20 pontos se muito concentrado em poucas horas
-
----
-
-### 🔗 Co-change Analysis
-
-**O que avalia:** Frequência com que pares de arquivos mudam juntos
-
-**Por quê:**
-
-- Acoplamento implícito indica possíveis problemas de design
-- Arquivos que mudam juntos frequentemente talvez devessem ser um módulo único
-- Ajuda a refatorar e reorganizar a arquitetura
-
-**Impacto no Score:** -25 pontos se alta coesão entre arquivos
-
----
-
-### 👻 Contribuidores Fantasmas
-
-**O que avalia:** Autores sem commits há mais de 90 dias
-
-**Por quê:**
-
-- Indica rotatividade de team ou abandono de projeto
-- Importante para entender continuidade do projeto
-- Afeta a manutenibilidade futura
-
-**Impacto no Score:** -20 pontos por cada contribuidor inativo
-
----
-
-### ⚡ Arquivos Voláteis
-
-**O que avalia:** Arquivos que recebem mais commits
-
-**Por quê:**
-
-- Arquivos muito modificados podem ser instáveis
-- Podem indicar requisitos fluidos ou design inadequado
-- Bons candidatos para testes e revisão de código
-
-**Impacto no Score:** -20 pontos se um arquivo tem >30% de todas as mudanças
-
----
-
-### 📈 Velocidade
-
-**O que avalia:** Comparação de commits nos últimos 30 vs 30 dias anteriores
-
-**Por quê:**
-
-- Indica se o projeto está ganhando ou perdendo momentum
-- Detecta desaceleração que pode indicar problemas
-- Mostra crescimento insustentável
-
-**Impacto no Score:** -15 pontos se declínio >30% ou crescimento >50%
-
----
-
-### 💪 Score de Saúde
-
-**Fórmula:**
-
-```
-Score = 100 - (work_life_balance + coupling + team_continuity + stability + momentum)
-```
-
-**Classificação:**
-| Score | Classificação |
-|-------|---------------|
-| 80-100 | ✅ Excelente |
-| 60-79 | ✓ Saudável |
-| 40-59 | ⚠️ Regular |
-| 0-39 | ❌ Crítico |
-
----
-
-## 🏗️ Estrutura do Projeto
+## Project structure
 
 ```
 git-surgeon/
 ├── git_surgeon/
-│   ├── __init__.py              # Package info
-│   ├── cli.py                   # CLI entry point (typer)
-│   ├── analyzer.py              # Core Git parser
-│   ├── reporter.py              # Rich rendering + HTML export
+│   ├── cli.py                   # CLI entry point (Typer)
+│   ├── analyzer.py              # Git parser core
+│   ├── reporter.py              # Terminal rendering (Rich) + HTML export
 │   └── metrics/
-│       ├── __init__.py
-│       ├── commits_by_hour.py   # Distribuição horária
-│       ├── cochange.py          # Análise de co-change
-│       ├── ghost_contributors.py # Contribuidores inativos
-│       ├── volatile_files.py    # Arquivos voláteis
-│       ├── velocity.py          # Momentum do projeto
-│       └── health_score.py      # Cálculo do score final
+│       ├── commits_by_hour.py
+│       ├── cochange.py
+│       ├── ghost_contributors.py
+│       ├── volatile_files.py
+│       ├── velocity.py
+│       └── health_score.py
 ├── tests/
-│   └── test_metrics.py          # Testes unitários
-├── pyproject.toml               # Configuração do projeto
-├── README.md                    # Este arquivo
-├── LICENSE                      # MIT License
+│   └── test_metrics.py
+├── pyproject.toml
+├── LICENSE
 └── .gitignore
 ```
 
 ---
 
-## 🛠️ Desenvolvimento
-
-### Setup para Desenvolvimento
+## Development
 
 ```bash
-# Clone o repositório
-git clone https://github.com/lughdeveloper/git-surgeon.git
-cd git-surgeon
-
-# Crie um virtual environment
+# Setup
 python -m venv venv
-
-# Ative o venv
-# No Windows:
-venv\Scripts\activate
-# No macOS/Linux:
-source venv/bin/activate
-
-# Instale em modo development com testes
+venv\Scripts\activate      # Windows
+source venv/bin/activate   # macOS/Linux
 pip install -e ".[dev]"
-```
 
-### Rodando Testes
-
-```bash
-# Todos os testes
+# Run tests
 pytest
+pytest --cov=git_surgeon   # with coverage
 
-# Com cobertura
-pytest --cov=git_surgeon
-
-# Modo verbose
-pytest -v
-```
-
-### Formatação de Código
-
-```bash
-# Black para formatação
+# Code quality
 black git_surgeon/ tests/
-
-# Ruff para linting
 ruff check git_surgeon/ tests/
-
-# MyPy para type checking
 mypy git_surgeon/
 ```
 
+Commits follow [Conventional Commits](https://www.conventionalcommits.org/):
+`feat:` `fix:` `docs:` `test:` `refactor:`
+
 ---
 
-## 📝 Commits Semânticos
+## Troubleshooting
 
-Ao contribuir, use commits semânticos:
-
+**"Not a valid Git repository"**
+Make sure the path points to the root of the repo, not the `.git` folder:
 ```bash
-git commit -m "feat: adiciona nova métrica de qualidade"
-git commit -m "fix: corrige parsing de commits inválidos"
-git commit -m "docs: melhora documentação do reporter"
-git commit -m "test: adiciona testes para velocity"
-git commit -m "refactor: simplifica lógica de health score"
+git-surgeon analyze ./my-project      # correct
+git-surgeon analyze ./my-project/.git # wrong
 ```
 
----
+**"No commits found"**
+The repo may be empty or the `--since` date too recent.
 
-## 🐛 Troubleshooting
-
-### "Not a valid Git repository"
-
-```bash
-# Certifique-se de que o caminho aponta para um repositório Git
-git-surgeon analyze /caminho/para/repo/.git  # ❌ Errado
-git-surgeon analyze /caminho/para/repo      # ✅ Correto
-```
-
-### "No commits found"
-
-O repositório pode estar vazio ou o filtro `--since` pode ser muito recente.
-
-### Erro de permissão
-
-```bash
-# No Windows, execute como administrador
-# No Linux/Mac, verifique permissões da pasta
-chmod -R u+r /caminho/para/repo
-```
+**Permission error on Windows**
+Run the terminal as Administrator.
 
 ---
 
-## 📊 Casos de Uso Reais
+## Use cases
 
-### 1. **Code Review Pré-Refatoração**
-
-Use a análise de co-change para identificar módulos que precisam ser reorganizados.
-
-### 2. **Onboarding de Novos Desenvolvedores**
-
-Mostre o relatório para que entendam a "saúde" e padrões do projeto.
-
-### 3. **Detecção de Burnout**
-
-Monitore os commits por hora para identificar padrões não-saudáveis na equipe.
-
-### 4. **Relatórios de Produto/Negócio**
-
-Exporte para HTML e compartilhe com stakeholders a saúde do projeto.
-
-### 5. **Acompanhamento de Projeto**
-
-Execute periodicamente e compare relatórios para acompanhar a evolução.
-
-### 6. **Identificação de Dependências**
-
-Use a análise de acoplamento para remover duplicações e dependências ocultas.
+- **Pre-refactor review** — use co-change analysis to find modules that should be merged or decoupled
+- **Team onboarding** — show new devs the health report to understand project history at a glance
+- **Burnout detection** — monitor commit hours to spot unhealthy work patterns
+- **Stakeholder reports** — export to HTML and share project health with non-technical stakeholders
+- **Periodic tracking** — run weekly and compare reports to track evolution over time
 
 ---
 
-## 🤝 Contribuindo
+## Contributing
 
-Contribuições são bem-vindas! Para contribuir:
+1. Fork the project
+2. Create your branch: `git checkout -b feat/your-feature`
+3. Commit with semantic messages
+4. Push: `git push origin feat/your-feature`
+5. Open a Pull Request
 
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feat/amazing-feature`)
-3. Commit com mensagens semânticas
-4. Push para a branch (`git push origin feat/amazing-feature`)
-5. Abra um Pull Request
-
-### Diretrizes de Contribuição
-
-- Escreva código limpo e bem documentado
-- Adicione testes para novas funcionalidades
-- Mantenha a cobertura acima de 80%
-- Use type hints em todo o código Python
-- Siga o estilo de código (black + ruff)
+Please keep test coverage above 80% and use type hints throughout.
 
 ---
 
-## 📄 Licença
+## Tech stack
 
-Este projeto está sob a licença **MIT**. Veja [LICENSE](LICENSE) para mais detalhes.
-
----
-
-## 🙏 Agradecimentos
-
-- [GitPython](https://github.com/gitpython-developers/GitPython) - Para parsing de Git
-- [Typer](https://github.com/tiangolo/typer) - Para CLI elegante
-- [Rich](https://github.com/Textualize/rich) - Para output visual no terminal
-- [Pydantic](https://github.com/pydantic/pydantic) - Para validação de dados
+- [GitPython](https://github.com/gitpython-developers/GitPython) — Git repository parsing
+- [Typer](https://github.com/tiangolo/typer) — CLI framework
+- [Rich](https://github.com/Textualize/rich) — Terminal rendering
+- [Pydantic](https://github.com/pydantic/pydantic) — Data validation
 
 ---
 
-## 📞 Suporte
+## License
 
-Encontrou um bug ou tem uma sugestão? Abra uma [issue no GitHub](https://github.com/lughdeveloper/git-surgeon/issues).
+MIT — see [LICENSE](LICENSE) for details.
 
 ---
 
-**Feito com 🔪 para tornar sua análise de Git mais fácil e intuitiva.**
-#   M o r e   c o n t e n t 
- 
- 
+*Built to make Git analysis fast, visual, and actually useful.*
