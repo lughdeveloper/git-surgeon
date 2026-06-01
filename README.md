@@ -432,3 +432,5 @@ Encontrou um bug ou tem uma sugestão? Abra uma [issue no GitHub](https://github
 ---
 
 **Feito com 🔪 para tornar sua análise de Git mais fácil e intuitiva.**
+#   M o r e   c o n t e n t  
+ 
