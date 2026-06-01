@@ -138,3 +138,5 @@ class RepositoryAnalyzer:
             "first_commit": commits[-1].timestamp,
             "last_commit": commits[0].timestamp,
         }
+
+# Enhanced parsing

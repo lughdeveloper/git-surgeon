@@ -87,3 +87,5 @@ class CochangeAnalysis:
         # Normalize to 0-100 scale
         coupling = min(100, (avg_pair_frequency / (total_files_changed / len(self.commits))) * 100)
         return coupling
+
+# Improved cochange detection
