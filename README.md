@@ -87,7 +87,7 @@ Calcula um score de 0 a 100 baseado em todos os indicadores, com classificação
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/git-surgeon.git
+git clone https://github.com/lughdeveloper/git-surgeon.git
 cd git-surgeon
 
 # Instale em modo development
@@ -280,7 +280,7 @@ git-surgeon/
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/git-surgeon.git
+git clone https://github.com/lughdeveloper/git-surgeon.git
 cd git-surgeon
 
 # Crie um virtual environment
@@ -427,10 +427,11 @@ Este projeto está sob a licença **MIT**. Veja [LICENSE](LICENSE) para mais det
 
 ## 📞 Suporte
 
-Encontrou um bug ou tem uma sugestão? Abra uma [issue no GitHub](https://github.com/seu-usuario/git-surgeon/issues).
+Encontrou um bug ou tem uma sugestão? Abra uma [issue no GitHub](https://github.com/lughdeveloper/git-surgeon/issues).
 
 ---
 
 **Feito com 🔪 para tornar sua análise de Git mais fácil e intuitiva.**
-#   M o r e   c o n t e n t  
+#   M o r e   c o n t e n t 
+ 
  
