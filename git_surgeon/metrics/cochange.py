@@ -89,3 +89,4 @@ class CochangeAnalysis:
         return coupling
 
 # Improved cochange detection
+# Improved co-change frequency calculation

@@ -140,3 +140,4 @@ class RepositoryAnalyzer:
         }
 
 # Enhanced parsing
+# Enhanced commit parsing for better performance

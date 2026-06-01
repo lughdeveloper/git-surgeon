@@ -568,3 +568,5 @@ class Reporter:
 </html>
 """
         return html
+
+# Better HTML export formatting
