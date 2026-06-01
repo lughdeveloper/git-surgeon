@@ -74,3 +74,5 @@ class VolatileFiles:
         concentration = (top_10_changes / total_changes * 100) if total_changes > 0 else 0
         
         return min(100, concentration)
+
+# Optimize file volatility calculation
